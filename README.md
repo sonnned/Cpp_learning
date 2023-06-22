@@ -202,3 +202,137 @@ int main() {
 
 ## Input de usuario
 Se usa el operador **>>** para tomar el input del usuario y **cin** para tomar el input del usuario
+
+# Operadores
+Existen diferentes tipos de operadores
+* Aritméticos
+* Relacionales
+* Lógicos
+* Asignación
+* Bitwise
+
+## Operadores de asignación
+Se utilizan para asignar un valor a una variable
+```cpp
+int main() {
+  int number;
+  number = 10; // Asigna el valor 10 a la variable number
+}
+```
+
+Podemos asignar de forma compuesta
+```cpp
+int main() {
+  int number;
+  number += 10; // Asigna el valor 10 a la variable number
+}
+```
+
+## Operadores relacionales
+Para usarlos debemos definir la operación dentro de paréntesis, si es verdadera devuelve 1, si es falsa devuelve 0
+```cpp
+int main() {
+  int number1 = 10;
+  int number2 = 20;
+  cout << (number1 == number2); // Devuelve 0
+  cout << (number1 != number2); // Devuelve 1
+  cout << (number1 > number2); // Devuelve 0
+  cout << (number1 < number2); // Devuelve 1
+  cout << (number1 >= number2); // Devuelve 0
+  cout << (number1 <= number2); // Devuelve 1
+}
+```
+
+## Operadores lógicos
+Combinan dos o más expresiones relacionales o lógicas
+```cpp
+int main() {
+  int number1 = 10;
+  int number2 = 20;
+  cout << (number1 == 10 && number2 == 20); // Devuelve 1
+  cout << (number1 == 10 || number2 == 20); // Devuelve 1
+  cout << (!(number1 == 10 && number2 == 20)); // Devuelve 0
+}
+```
+* **&&**: Devuelve 1 si ambas expresiones son verdaderas
+* **||**: Devuelve 1 si al menos una expresión es verdadera
+* **!**: Devuelve 1 si la expresión es falsa
+
+## Bitwise
+Operan en números binarios. Ellos operan bit a bit, es decir, realizan una operación entre los bits de los operandos
+```cpp
+int main() {
+  int number1 = 10;
+  int number2 = 20;
+  cout << (number1 & number2); // Devuelve 0
+  cout << (number1 | number2); // Devuelve 30
+  cout << (number1 ^ number2); // Devuelve 30
+  cout << (~number1); // Devuelve -11
+  cout << (number1 << 2); // Devuelve 40
+  cout << (number1 >> 2); // Devuelve 2
+}
+```
+* **&**: Devuelve 1 si ambos bits son 1 (AND)
+* **|**: Devuelve 1 si al menos un bit es 1 (OR)
+* **^**: Devuelve 1 si ambos bits son diferentes (XOR)
+* **~**: Devuelve el complemento de 1 (NOT)
+* **<<**: Desplaza los bits a la izquierda (LEFT SHIFT)
+* **>>**: Desplaza los bits a la derecha (RIGHT SHIFT)
+
+# Presedencia y asociatividad
+
+## Presedencia
+Determina el orden de evaluación de los operadores
+
+## Asociatividad
+Determina el orden de evaluación de los operadores con la misma presedencia
+
+# Condicionales
+Se usan para tomar decisiones. Son ejecutados de forma secuencial, es decir, de arriba hacia abajo. Se ejecuta el bloque de código que cumpla con la condición
+
+## Switch
+Si queremos verificar sobre una gran cantidad de casos, usamos **switch**
+```cpp
+int main() {
+  int number = 10;
+  switch (number) {
+    case 10:
+      cout << "number es igual a 10";
+      break;
+    case 20:
+      cout << "number es igual a 20";
+      break;
+    default:
+      cout << "number no es igual a 10 ni a 20";
+  }
+}
+```
+
+Podemos usar **...** para indicar un rango de valores
+```cpp
+int main() {
+  int number = 10;
+  switch (number) {
+    case 0 ... 10:
+      cout << "Entre 0 y 10";
+      break;
+    case 11 ... 20:
+      cout << "Entre 11 y 20";
+      break;
+    default:
+      cout << "No 
+  }
+}
+```
+
+## Operador condicional ternario
+Es una forma abreviada de escribir un if-else
+```cpp
+int main() {
+  int number = 10;
+  string result = (number == 10) ? "number es igual a 10" : "number no es igual a 10";
+  cout << result;
+}
+```
+
+Si se cumple la condición, se ejecuta la primera expresión, si no se cumple, se ejecuta la segunda expresión
