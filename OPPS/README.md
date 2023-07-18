@@ -147,3 +147,4 @@ int main() {
 }
 ```
 La sobre carga nos ahorra memoria en el sistema, por lo tanto se compilan más rápido
+## Punteros
