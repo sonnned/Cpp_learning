@@ -272,3 +272,435 @@ Los punteros pueden actuar como una variable global
 * __p + 1__: Incrementa el puntero en 1
 * __p - 1__: Decrementa el puntero en 1
 Se incrementa y decrementa la dirección de memoria en un tamaño de __4 bytes__
+# Clases
+Son usadas para crear tipos de datos definidos por el usuario. Una clase es como un plano para un objeto, define los atributos y métodos que un objeto puede tener.
+```cpp
+class className {
+
+};
+
+int main() {
+  int i;
+  className obj;
+}
+```
+## Modificadores de acceso
+Podemos imponer restricciones de acceso a diferentes partes de una clase. Hay tres tipos de modificadores de acceso:
+1. __private__: Los miembros de una clase son privados por defecto. Los miembros privados solo pueden ser accedidos por funciones miembro de la misma clase.
+```cpp
+class Class1 {
+  int num; // This is, by default, a private data member
+  ...
+};
+
+class Class2 {
+  private: // We have explicitly defined that the variable is private
+  int num;
+  ...
+};
+```
+2. __public__: Significa que los miembros de la clase pueden ser accedidos desde cualquier parte del programa. Los miembros públicos pueden ser accedidos por funciones miembro de la misma clase, funciones de otras clases y funciones fuera de la clase.
+```cpp
+class myClass {
+  int num; // Private variable
+  
+  public: // Attributes in this list are public
+  void setNum(){
+    // The private variable is directly accessible over here!
+  }
+};
+
+int main() {
+  myClass c; // Object created
+  c.setNum(); // Can manipulate the value of num
+  c.num = 20; // This would cause an error since num is private
+}
+```
+3. __protected__: Su uso es principalmente en herencia
+## Funciones miembro
+```cpp
+class Rectangle {
+  int length;
+  int width;
+
+  public:
+  void setLength(int l){ // This function changes the value of length
+    length = l;
+  }
+  
+  int area(){
+    return length * width; // Only the values of the data members are accessed and used to calculate the area
+  }
+};
+```
+### Operador scope resolution
+El operador __(::)__ nos permite declarar las funciones miembro fuera de la clase
+```cpp
+class Rectangle {
+  int length;
+  int width;
+
+  public:
+  
+  // We only write the declaration here
+  void setLength(int l);
+  int area();
+};
+
+// Somewhere else in the code
+void Rectangle::setLength(int l){ // Using the scope resolution operator
+  length = l;
+}
+
+int Rectangle::area(){
+  return length * width; 
+}
+```
+### Funciones Get y Set
+Son simples como cualquier otra función miembro, pero su propósito es obtener y establecer el valor de los atributos privados de la clase
+```cpp
+class Rectangle {
+  int length;
+  int width;
+
+  public:
+  
+  // get and set for length
+  void setLength(int l);
+  int getLength();
+  
+  // get and set for width
+  void setWidth(int w);
+  int getwidth();
+  
+  int area();
+};
+
+
+void Rectangle::setLength(int l){ 
+  length = l;
+}
+int Rectangle::getLength(){ 
+  return length;
+}
+
+void Rectangle::setWidth(int w){ 
+  width = w;
+}
+int Rectangle::getWidth(){ 
+  return width;
+}
+
+int Rectangle::area(){
+  return length * width; 
+}
+```
+## Overloading
+Es cuando hay varias funciones con el mismo nombre pero con diferentes parámetros. El compilador decide cuál función ejecutar dependiendo de los argumentos que se le pasen
+```cpp
+class Rectangle {
+  int length;
+  int width;
+
+  public:
+  
+  // get and set for length
+  void setLength(int l);
+  int getLength();
+  
+  // get and set for width
+  void setWidth(int w);
+  int getwidth();
+  
+  int area();
+  
+  // Overloading the area function
+  int area(int l, int w);
+};
+```
+## Constructores
+Es una función especial que se ejecuta cada vez que se crea un objeto de una clase. Se usa para inicializar los objetos de la clase
+```cpp
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Date {
+  int day;
+  int month;
+  int year;
+
+  public:
+  // Default constructor
+  Date(){
+    // We must define the default values for day, month, and year
+    day = 0;
+    month = 0;
+    year = 0;
+  }
+
+  // A simple print function
+  void printDate(){ 
+    cout << "Date: " << day << "/" << month << "/" << year << endl;
+  }
+};
+
+int main(){
+  // Call the Date constructor to create its object;
+  
+  Date d; // Object created with default values!
+  d.printDate();
+}
+```
+## Parametros de constructor
+```cpp
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Date {
+  int day;
+  int month;
+  int year;
+
+  public:
+  // Default constructor
+  Date(){
+    // We must define the default values for day, month, and year
+    day = 0;
+    month = 0;
+    year = 0;
+  }
+  
+  // Parameterized constructor
+  Date(int d, int m, int y){
+    // The arguments are used as values
+    day = d;
+    month = m;
+    year = y;
+  }
+
+  // A simple print function
+  void printDate(){ 
+    cout << "Date: " << day << "/" << month << "/" << year << endl;
+  }
+};
+
+int main(){
+  // Call the Date constructor to create its object;
+  
+  Date d(1, 8, 2018); // Object created with specified values!
+  d.printDate();
+}
+```
+### this
+Es un puntero que apunta al objeto actual. Se usa para acceder a los miembros de la clase
+```cpp
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Date {
+  int day;
+  int month;
+  int year;
+
+  public:
+  // Default constructor
+  Date(){
+    // We must define the default values for day, month, and year
+    day = 0;
+    month = 0;
+    year = 0;
+  }
+  
+  // Parameterized constructor
+  Date(int day, int month, int year){
+    // Using this pointer
+    this->day = day;
+    this->month = month;
+    this->year = year;
+  }
+
+  // A simple print function
+  void printDate(){ 
+    cout << "Date: " << day << "/" << month << "/" << year << endl;
+  }
+};
+
+int main(){
+  // Call the Date constructor to create its object;
+  
+  Date d(1, 8, 2018); // Object created with specified values!
+  d.printDate();
+}
+```
+## Destructor
+Contrario al constructor se llama cuando el objeto es destruido. Se usa para liberar la memoria reservada por el objeto. Usa el operador __~__ seguido del nombre de la clase
+### Explicit Garbage Collection
+Lo podemos crear mediante punteros inteligentes. Manteniendo un contador de referencias para cada objeto. Cuando el contador llega a cero, el objeto es eliminado
+```cpp
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Collector {
+  int * list;
+  int size;
+  int capacity;
+
+  public:
+  // Default constructor
+  Collector(){
+    // We must define the default values for the data members
+    list = nullptr;
+    size = 0;
+    capacity = 0;
+  }
+  
+  // Parameterized constructor
+  Collector(int cap){
+    // The arguments are used as values
+    capacity = cap;
+    size = 0;
+    list = new int[capacity];
+  }
+
+  bool append(int v){
+    if (size < capacity) {
+      list [ size++ ] = v;
+      return true;
+    }
+    return false;
+  }
+
+  // A simple print function
+  void dump(){ 
+    for(int i = 0 ; i < size ; i++) {
+      cout << list[i] << " ";
+    }
+    cout << endl;
+  }
+  
+  ~Collector(){
+    cout << "Deleting the object " << endl;
+    if (capacity > 0)
+      delete[] list; 
+  }
+};
+
+int main(){  
+  Collector c(10); 
+  for (int i = 0 ; i < 15 ; i++){
+    cout << c.append(i) << endl;
+  }
+}
+```
+## Funciones friend
+Es una función independiente que tiene acceso a las variables privadas de una clase. Se declara precediendo la declaración de la clase con la palabra clave __friend__
+```cpp
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class Ball{
+  double radius;
+  string color;
+  
+  public:
+  Ball(){
+    radius = 0;
+    color = "";
+  }
+  
+  Ball(double r, string c){
+    radius = r;
+    color = c;
+  }
+  
+  void printVolume();
+  void printRadius();
+  
+  // The friend keyword specifies that this is a friend function
+  friend void setRadius(Ball &b, double r); 
+    
+};
+
+// This is a member function that calculates the volume.
+void Ball::printVolume(){
+  cout << (4/3) * 3.142 * radius * radius * radius << endl;
+}
+
+void Ball::printRadius(){
+  cout << radius << endl;
+}
+
+// The implementation of our friend function
+void setRadius(Ball &b, double r){
+  b.radius = r;
+}
+
+ int main(){
+   Ball b(30, "green");
+   cout << "Radius: ";
+   b.printRadius();
+   setRadius(b, 60);
+   cout << "New radius: ";
+   b.printRadius();
+   cout << "Volume: ";
+   b.printVolume();
+ }
+ #include <iostream>
+#include <string>
+
+using namespace std;
+
+class Ball{
+  double radius;
+  string color;
+  
+  public:
+  Ball(){
+    radius = 0;
+    color = "";
+  }
+  
+  Ball(double r, string c){
+    radius = r;
+    color = c;
+  }
+  
+  void printVolume();
+  void printRadius();
+  
+  // The friend keyword specifies that this is a friend function
+  friend void setRadius(Ball &b, double r); 
+    
+};
+
+// This is a member function that calculates the volume.
+void Ball::printVolume(){
+  cout << (4/3) * 3.142 * radius * radius * radius << endl;
+}
+
+void Ball::printRadius(){
+  cout << radius << endl;
+}
+
+// The implementation of our friend function
+void setRadius(Ball &b, double r){
+  b.radius = r;
+}
+
+ int main(){
+   Ball b(30, "green");
+   cout << "Radius: ";
+   b.printRadius();
+   setRadius(b, 60);
+   cout << "New radius: ";
+   b.printRadius();
+   cout << "Volume: ";
+   b.printVolume();
+ }
+```
