@@ -806,3 +806,596 @@ int main() {
   cout << "Perimeter: " << c.perimeter() << endl;
 }
 ```
+# Herencia
+Es una relación entre dos clases, donde una clase es la clase base y la otra es la clase derivada. La clase derivada hereda los miembros de la clase base y puede acceder a ellos. La clase base no puede acceder a los miembros de la clase derivada.
+```cpp
+class Vehicle{
+  protected:
+  string Make;
+  string Color;
+  int Year;
+  string Model;
+
+  public:
+  Vehicle(){
+    Make = "";
+    Color = "";
+    Year = 0;
+    Model = "";
+  }
+  
+  Vehicle(string mk, string col, int yr, string mdl){
+    Make = mk;
+    Color = col;
+    Year = yr;
+    Model = mdl;
+  }
+
+  void print_details(){
+    cout << "Manufacturer: " << Make << endl;
+    cout << "Color: " << Color << endl;
+    cout << "Year: " << Year << endl;
+    cout << "Model: " << Model << endl;
+  }
+};
+
+int main(){
+  Vehicle v("Ford Australia", "Yellow", 2008, "Falcon");  
+  v.print_details();
+}
+```
+## Clase base y clase derivada
+* __Clase base__: Es la clase de la que se heredan los miembros
+* __Clase derivada__: Es la clase que hereda los miembros de la clase base
+
+Para heredar los miembros de una clase base a una clase derivada usamos el operador __:__ seguido del nombre de la clase base
+```cpp
+class Vehicle{
+  protected:
+  string Make;
+  string Color;
+  int Year;
+  string Model;
+
+  public:
+  Vehicle(){
+    Make = "";
+    Color = "";
+    Year = 0;
+    Model = "";
+  }
+  
+  Vehicle(string mk, string col, int yr, string mdl){
+    Make = mk;
+    Color = col;
+    Year = yr;
+    Model = mdl;
+  }
+
+  void print_details(){
+    cout << "Manufacturer: " << Make << endl;
+    cout << "Color: " << Color << endl;
+    cout << "Year: " << Year << endl;
+    cout << "Model: " << Model << endl;
+  }
+};
+
+class Cars: public Vehicle{
+  string trunk_size;
+
+  public:
+  Cars(){
+    trunk_size = "";
+  }
+
+  Cars(string mk, string col, int yr, string mdl, string ts)
+    :Vehicle(mk, col, yr, mdl){
+    trunk_size = ts;
+  }
+
+  void car_details(){
+    print_details();
+    cout << "Trunk size: " << trunk_size << endl;
+  }
+};
+
+class Ships: public Vehicle{
+  int Number_of_Anchors;
+
+  public:
+  Ships(){
+    Number_of_Anchors = 0;
+  }
+  
+  Ships(string mk, string col, int yr, string mdl, int na)
+  :Vehicle(mk, col, yr, mdl){
+    Number_of_Anchors = na;
+  }
+
+  void Ship_details(){
+    print_details();
+    cout << "Number of Anchors: " << Number_of_Anchors << endl;
+  }
+};
+
+int main(){
+  Cars car("Chevrolet", "Black", 2010, "Camaro", "9.1 cubic feet");
+  car.car_details();
+  
+  cout << endl;
+  
+  Ships ship("Harland and Wolff, Belfast", "Black and whilte",
+            1912, "RMS Titanic", 3);
+  ship.Ship_details();
+}
+```
+### Constructor clase base
+Instanciamos la __clase derivada__ sin parámetros primero llamará al constructor por defecto de la __clase base__ y luego a la __clase derivada__
+```cpp
+#include <iostream> 
+using namespace std; 
+  
+// Base class 
+class Base {    
+    
+    public: 
+    Base(){
+      cout << "Base class default constructor!" << endl;
+    }
+    // Base class's parameterised constructor     
+    Base(float i) {
+        cout << "Base class parameterized constructor" << endl; 
+    } 
+}; 
+  
+  
+// Derived class 
+class Derived : public Base { 
+    public:  
+    Derived(){
+      cout << "Derived class default constructor!" << endl;
+    }
+  
+    // Derived class's parameterised constructor 
+    Derived(float num): Base(num){ 
+        cout << "Derived class parameterized constructor" << endl; 
+    } 
+}; 
+  
+// main function 
+int main() {    
+    // creating object of Derived Class 
+    Derived obj;
+    cout << endl;
+    Derived obj1(10.2);
+} 
+```
+### Destructor clase base
+Primero se llama el destructor de la __clase derivada__ y luego el destructor de la __clase base__
+```cpp
+#include <iostream> 
+using namespace std; 
+  
+// Base class 
+class Base {    
+    
+    public:  
+    ~Base(){
+      cout << endl << "Base class Destructor!" ;
+    }
+}; 
+  
+  
+// Derived class 
+class Derived : public Base { 
+    public:  
+    
+    ~Derived(){
+      cout << endl << "Derived class Destructor!" ;
+    }
+}; 
+  
+// main function 
+int main() {    
+    // creating object of Derived Class 
+    Derived obj;
+    
+} 
+```
+## Overriding
+Cuando una __clase derivada__ hereda de un __clase base__ podemos cambiar parte de la funcionalidad heredada, esto es overriding. Se usa para modificar el comportamiento de una función heredada
+```cpp
+#include <iostream>
+using namespace std;
+
+class Employee {
+  protected:
+    string name;
+    int ID;
+    int reportsTo;
+  public:
+    Employee(string name, int ID, int boss) : name(name), ID(ID), reportsTo(boss) { }
+    string getName() { return name; }
+    int getID() { return ID; }
+    int getBoss() { return reportsTo; }
+    void display() {
+      cout << ID << " " << name << " reports to " << reportsTo << endl;
+    }
+
+    void display(string salutation)
+    {
+      cout << salutation << " ";
+      display();
+    }
+};
+
+class Manager : public Employee {
+  protected:
+    string teamName;
+  public:
+    Manager(string name, int ID, int boss, string teamName) : Employee(name, ID, boss), teamName(teamName) { }
+    void display() {
+      Employee::display();
+      cout << "   Heads the team " << teamName << endl;
+    }
+};
+
+
+
+int main() {
+  Employee worker("John Smith", 10, 2);
+  Manager ceo("Jack Hobbs", 0, 0, "Eats R Us");
+  Manager cto("Elizabeth Shaw", 2, 0, "IT");
+  worker.display("Mr");
+  ceo.display();
+  cto.display();
+  //ceo.display("Mr")
+  return 0;
+}
+```
+El __overriding__ de una función en una clase derivada oculta todos los __overloads__ de la misma función de la clase base
+## Modos de herencia
+### Private
+Los miembros de datos privados y las funciones miembros de la __clase base__ son inaccesibles desde la __clase derivada__. Los miembros protegidos y públicos de la __clase base__ son accesibles a la __clase derivada__ y se comportan como miembros privados de la __clase derivada__
+```cpp
+class Vehicle{
+  
+  string Make;
+  string Color;
+  int Year;
+  
+  protected:
+  string Model;
+  
+  public:
+  Vehicle(){
+    Make = "";
+    Color = "";
+    Year = 0;
+    Model = "";
+  }
+  
+  Vehicle(string mk, string col, int yr, string mdl){
+    Make = mk;
+    Color = col;
+    Year = yr;
+    Model = mdl;
+  }
+
+  void print_details(){
+    cout << "Manufacturer: " << Make << endl;
+    cout << "Color: " << Color << endl;
+    cout << "Year: " << Year << endl;
+  }
+};
+
+class Car: private Vehicle{
+  string trunk_size;
+
+  public:
+  Car(){
+    trunk_size = "";
+  }
+
+  Car(string mk, string col, int yr, string mdl, string ts)
+    :Vehicle(mk, col, yr, mdl){
+    trunk_size = ts;
+  }
+
+  void car_details(){
+    print_details();
+    cout << "Trunk size: " << trunk_size << endl;
+    cout << "Model: " << Model << endl;  // Model is protected and 
+    // is accessible in derived class
+  }
+};
+
+int main(){
+  Car car("Chevrolet", "Black", 2010, "Camaro", "9.1 cubic feet");
+  // car.Year = 2000;     // this will give error as Year is private
+  // car.Model = "Accord";   // this will give error as Model is protected
+  
+  car.car_details();
+  //car.print_details();   // public functions of base class are inaccessible in main
+}
+```
+### Protected
+Los miembros privados de la __clase base__ son inaccesibles en la __clase derivada__. Los miembros protegidos de la __clase base__ son accesibles a la __clase derivada__ y se comportan como miembros protegidos de la __clase derivada__. Los miembros públicos de la __clase base__ son accesibles a la __clase derivada__ y se comportan como miembros públicos de la __clase derivada__
+```cpp
+class Vehicle{
+  
+  string Make;
+  string Color;
+  int Year;
+  
+  protected:
+  string Model;
+  
+  public:
+  Vehicle(){
+    Make = "";
+    Color = "";
+    Year = 0;
+    Model = "";
+  }
+  
+  Vehicle(string mk, string col, int yr, string mdl){
+    Make = mk;
+    Color = col;
+    Year = yr;
+    Model = mdl;
+  }
+
+  void print_details(){
+    cout << "Manufacturer: " << Make << endl;
+    cout << "Color: " << Color << endl;
+    cout << "Year: " << Year << endl;
+  }
+};
+
+class Car: protected Vehicle{
+  string trunk_size;
+
+  public:
+  Car(){
+    trunk_size = "";
+  }
+
+  Car(string mk, string col, int yr, string mdl, string ts)
+    :Vehicle(mk, col, yr, mdl){
+    trunk_size = ts;
+  }
+
+  void car_details(){
+    print_details();
+    cout << "Trunk size: " << trunk_size << endl;
+    cout << "Model: " << Model << endl;  // Model is protected and 
+    // is accessible in derived class
+  }
+};
+
+int main(){
+  Car car("Chevrolet", "Black", 2010, "Camaro", "9.1 cubic feet");
+  // car.Year = 2000;     // this will give error as Year is private
+  // car.Model = "Accord";   // this will give error as Model is protected
+  
+  car.car_details();
+  //car.print_details();   // public functions of base class are inaccessible in main
+}
+```
+### Public
+Los miembros privados de la clase base son inaccesibles en la clase derivada. Los miembros protegidos de la clase base son accesibles a la clase derivada y se comportan como miembros protegidos de la clase derivada. Los miembros públicos de la clase base son accesibles a la clase derivada y se comportan como miembros públicos de la clase derivada.
+```cpp
+class Vehicle{
+  
+  string Make;
+  string Color;
+  int Year;
+  
+  protected:
+  string Model;
+  
+  public:
+  Vehicle(){
+    Make = "";
+    Color = "";
+    Year = 0;
+    Model = "";
+  }
+  
+  Vehicle(string mk, string col, int yr, string mdl){
+    Make = mk;
+    Color = col;
+    Year = yr;
+    Model = mdl;
+  }
+
+  void print_details(){
+    cout << "Manufacturer: " << Make << endl;
+    cout << "Color: " << Color << endl;
+    cout << "Year: " << Year << endl;
+  }
+};
+
+class Car: public Vehicle{
+  string trunk_size;
+
+  public:
+  Car(){
+    trunk_size = "";
+  }
+
+  Car(string mk, string col, int yr, string mdl, string ts)
+    :Vehicle(mk, col, yr, mdl){
+    trunk_size = ts;
+  }
+
+  void car_details(){
+    cout << "Trunk size: " << trunk_size << endl;
+    cout << "Model: " << Model << endl;  // Model is protected and 
+    // is accessible in derived class
+  }
+};
+
+int main(){
+  Car car("Chevrolet", "Black", 2010, "Camaro", "9.1 cubic feet");
+  // car.Year = 2000;     // this will give error as Year is private
+   //car.Model = "Accord";   // this will give error as Model is protected
+  
+  car.car_details();
+  car.print_details();   // public functions of base class are accessible in main
+}
+```
+## Herencia múltiple
+Se trata de heredar múltiples clases a una clase derivada. La clase derivada hereda todos los miembros de las clases base
+```cpp
+class Vehicle{
+  protected:
+  string Make;
+  string Color;
+  int Year;
+  string Model;
+
+  public:
+  Vehicle(){
+    Make = "";
+    Color = "";
+    Year = 0;
+    Model = "";
+  }
+  
+  Vehicle(string mk, string col, int yr, string mdl){
+    Make = mk;
+    Color = col;
+    Year = yr;
+    Model = mdl;
+  }
+
+  void print_details(){
+    cout << "Manufacturer: " << Make << endl;
+    cout << "Color: " << Color << endl;
+    cout << "Year: " << Year << endl;
+    cout << "Model: " << Model << endl;
+  }
+};
+
+class Car{
+  string trunk_size;
+
+  public:
+  Car(){
+    trunk_size = "";
+  }
+
+  Car(string ts){
+    trunk_size = ts;
+  }
+
+  void car_details(){
+    cout << "Trunk size: " << trunk_size << endl;
+  }
+};
+
+class Honda: public Vehicle, public Car{
+  int top_speed;
+
+  public:
+  Honda(){
+    top_speed = 0;
+  }
+  
+  Honda(string mk, string col, int yr, string mdl, string na, int ts)
+  :Vehicle(mk, col, yr, mdl), Car(na){
+    top_speed = ts;
+  }
+
+  void Honda_details(){
+    print_details();
+    car_details();
+    cout << "Top speed of the car: " << top_speed << endl;
+  }
+};
+
+int main(){
+  Honda car("Honda", "Black", 2006, "Accord", "14.7 cubic feet", 260);
+  car.Honda_details();
+}
+```
+## Problema del diamante
+Cuando una clase derivada hereda de dos clases base que a su vez heredan de una misma clase base. La clase derivada hereda dos copias de la clase base. Problema:
+```cpp
+#include<iostream>
+using namespace std;
+ 
+class A
+{
+protected:
+    int ID;
+public:
+    A() : ID(0) { }
+};
+ 
+class B:  public A
+{
+public:
+    int length;
+};
+ 
+class C:  public A
+{
+public:
+    int radius;
+};
+ 
+class D: public B, public C
+{
+public:
+    int getID()  {   return ID;  }
+};
+ 
+int main(void)
+{
+    D d;
+    cout << d.getID();
+    return 0;
+}
+```
+Solución:
+```cpp
+#include<iostream>
+using namespace std;
+ 
+class A
+{
+protected:
+    int ID;
+public:
+    A() : ID(0) { }
+};
+ 
+class B:  virtual public A
+{
+public:
+    int length;
+};
+ 
+ 
+class C:  virtual public A
+{
+public:
+    int radius;
+};
+ 
+class D: public B, public C
+{
+public:
+    int getID()  {   return ID;  }
+};
+ 
+int main(void)
+{
+    D d;
+    cout << d.getID();
+    return 0;
+}
+```
