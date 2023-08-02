@@ -1399,3 +1399,249 @@ int main(void)
     return 0;
 }
 ```
+# Polimorfismo
+Se refiere a la capacidad de una variable, función o objeto para tomar varias formas. En C++ podemos usar funciones virtuales y clases abstractas para lograr el polimorfismo
+```cpp
+#include <iostream>
+using namespace std;
+
+// A simple Shape interface which provides a method to get the Shape's area
+class Shape {
+  public:
+  float getArea(){}
+};
+
+// A Rectangle is a Shape with a specific width and height
+class Rectangle : public Shape {   // derived form Shape class
+  private:
+  float width;
+  float height;
+
+  public:
+  Rectangle(float wid, float heigh) {
+    width = wid;
+    height = heigh;
+  }
+  float getArea(){
+    return width * height; 
+  }
+};
+
+// A Circle is a Shape with a specific radius
+class Circle : public Shape {
+  private:
+  float radius;
+
+  public:
+  Circle(float rad){
+    radius = rad; 
+  }
+  float getArea(){
+    return 3.14159f * radius * radius; 
+  }
+};
+
+int main() {
+  Rectangle r(2, 6);    // Creating Rectangle object
+
+  Shape* shape = &r;   // Referencing Shape class to Rectangle object
+
+  cout << "Calling Rectangle getArea function: " << r.getArea() << endl;
+  cout << "Calling Rectangle from shape pointer: " <<  shape->getArea() << endl <<endl;
+  
+  Circle c(5);    // Creating Circle object
+
+  shape = &c;   // Referencing Shape class to Circle object
+  
+  cout << "Calling Circle getArea function: " << c.getArea() << endl;
+  cout << "Calling Circle from shape pointer: " <<shape->getArea() << endl << endl; 
+}
+```
+## Overriding
+Permitimos que una clase hija proporcione una implementación específica de un método que ya está proporcionado por una de sus clases padre. Se usa para modificar el comportamiento de una función heredada
+```cpp
+#include <iostream>
+using namespace std;
+
+// A simple Shape interface which provides a method to get the Shape's area
+class Shape {
+  public:
+  float getArea(){}
+};
+
+// A Rectangle is a Shape with a specific width and height
+class Rectangle : public Shape {   // derived form Shape class
+  private:
+  float width;
+  float height;
+
+  public:
+  Rectangle(float wid, float heigh) {
+    width = wid;
+    height = heigh;
+  }
+  float getArea(){
+    return width * height; 
+  }
+};
+
+// A Circle is a Shape with a specific radius
+class Circle : public Shape {
+  private:
+  float radius;
+
+  public:
+  Circle(float rad){
+    radius = rad; 
+  }
+  float getArea(){
+    return 3.14159f * radius * radius; 
+  }
+};
+
+int main() {
+  Rectangle r(2, 6);    // Creating Rectangle object
+
+  Shape* shape = &r;   // Referencing Shape class to Rectangle object
+
+  cout << "Calling Rectangle getArea function: " << r.getArea() << endl;      // Calls Rectangle.printArea()
+  cout << "Calling Rectangle from shape pointer: " <<  shape->getArea() << endl <<endl; // Calls shape's dynamic-type's
+  
+  Circle c(5);    // Creating Circle object
+
+  shape = &c;   // Referencing Shape class to Circle object
+  
+  cout << "Calling Circle getArea function: " << c.getArea() << endl;
+  cout << "Calling Circle from shape pointer: " <<shape->getArea() << endl << endl; 
+}
+```
+Las ventajas del __overriding__:
+* Las clases derivadas pueden dar su propia implementaciónes pecífica a los métodos heredados sin modificar los métodos de la clase padre
+* Si una clase hija necesita usar el método de la clase padre, puede usarlo, y las otras clases que quieran tener una implementación diferente pueden usar la característica de sobreescritura para hacer cambios
+## Miembros virtuales
+Significa que existen sólo en forma declarativa pero no en forma de implementación
+```cpp
+#include <iostream>
+using namespace std;
+
+// A simple Shape interface which provides a method to get the Shape's area
+class Shape {
+  public:
+  virtual float getArea(){}
+};
+
+// A Rectangle is a Shape with a specific width and height
+class Rectangle : public Shape {   // derived form Shape class
+  private:
+  float width;
+  float height;
+
+  public:
+  Rectangle(float wid, float heigh) {
+    width = wid;
+    height = heigh;
+  }
+  float getArea(){
+    return width * height; 
+  }
+};
+
+// A Circle is a Shape with a specific radius
+class Circle : public Shape {
+  private:
+  float radius;
+
+  public:
+  Circle(float rad){
+    radius = rad; 
+  }
+  float getArea(){
+    return 3.14159f * radius * radius; 
+  }
+};
+
+int main() {
+  Rectangle r(2, 6);    // Creating Rectangle object
+  Shape* shape = &r;   // Referencing Shape class to Rectangle object
+
+  cout << "Calling Rectangle from shape pointer: " <<  shape->getArea() << endl; // Calls shape's dynamic-type's
+  
+  Circle c(5);    // Creating Circle object
+  shape = &c;   // Referencing Shape class to Circle object
+  
+   cout << "Calling Circle from shape pointer: " <<shape->getArea() << endl; 
+
+}
+```
+## Funciones virtuales puras
+Usamos __=0__ para definir una función virtual pura. Una clase que contiene una función virtual pura se llama clase abstracta. Una clase abstracta no se puede instanciar. Se usa para proporcionar una interfaz para las clases derivadas
+```cpp
+#include <iostream>
+using namespace std;
+
+// A simple Shape interface which provides a method to get the Shape's area
+class Shape {
+  public:
+  virtual float getArea() = 0;
+};
+// A Rectangle is a Shape with a specific width and height
+class Rectangle : public Shape {   // derived form Shape class
+  private:
+  float width;
+  float height;
+
+  public:
+  Rectangle(float wid, float heigh) {
+    width = wid;
+    height = heigh;
+  }
+  float getArea(){
+    return width * height; 
+  }
+};
+
+// A Circle is a Shape with a specific radius
+class Circle : public Shape {
+  private:
+  float radius;
+
+  public:
+  Circle(float rad){
+    radius = rad; 
+  }
+  float getArea(){
+    return 3.14159f * radius * radius; 
+  }
+};
+
+// A Square is a Shape with a specific length
+class Square : public Shape {
+  private:
+  float length;
+
+  public:
+  Square(float len){
+    length = len;
+  }
+  float getArea(){
+    return length * length; 
+  }
+};
+
+int main() {
+  Shape * shape[3];   // Referencing Shape class to Rectangle object
+  //Shape * shape1 = new Shape(); //Instantiating the shape object
+
+  Rectangle r(2, 6);    // Creating Rectangle object
+  shape[0] = &r;   // Referencing Shape class to Rectangle object
+  
+  Circle c(5);    // Creating Circle object
+  shape[1] = &c;   // Referencing Shape class to Circle object
+
+  Square s(10);   // Creating Square object
+  shape[2] = &s;     // Referencing Shape class to Circle object
+
+  for(int i=0; i<3; i++)
+    cout << shape[i]->getArea() << endl; 
+}
+```
